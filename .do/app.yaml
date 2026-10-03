@@ -1,0 +1,17 @@
+name: rapid-quiz-web
+region: fra
+static_sites:
+  - name: web
+    github:
+      repo: <github-kullanıcı>/rapid-quiz-frontend
+      branch: main
+      deploy_on_push: true
+    build_command: npm ci && npm run build
+    output_dir: dist
+    index_document: index.html
+    # Vue Router history modu: /quiz/... gibi adresler yenilenince 404 vermesin.
+    catchall_document: index.html
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: BUILD_TIME
+        value: https://api.rapidquiz.example.com/api/v1

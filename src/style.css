@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}

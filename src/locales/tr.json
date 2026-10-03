@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "Rapid Quiz",
+    "tagline": "5 saniyede bir soru, 20 soruda bir sıralama."
+  },
+  "common": {
+    "retry": "Tekrar dene",
+    "home": "Ana sayfa",
+    "loading": "Yükleniyor…"
+  },
+  "home": {
+    "title": "Bir kategori seç",
+    "subtitle": "20 soru, her soru için yalnızca 5 saniye. Geri dönüş yok!",
+    "empty": "Şu an aktif kategori yok.",
+    "questions": "20 soru"
+  },
+  "quiz": {
+    "question": "Soru {current}/{total}",
+    "secondsLeft": "{n} saniye kaldı",
+    "score": "Puan: {score}",
+    "correct": "Doğru!",
+    "wrong": "Yanlış",
+    "timeUp": "Süre doldu",
+    "leaveConfirm": "Quiz yarıda kalacak ve ilerlemen kaybolacak. Ana sayfaya dönmek istiyor musun?"
+  },
+  "result": {
+    "title": "Quiz bitti!",
+    "score": "Toplam puan",
+    "outOf": "/ {max}",
+    "correctCount": "{correct} / {total} doğru",
+    "nameTitle": "Adını skor tablosuna yaz",
+    "nameSaved": "Skorun {name} adıyla kaydedildi.",
+    "viewLeaderboard": "Skor tablosunu gör",
+    "playAgain": "Tekrar oyna"
+  },
+  "name": {
+    "label": "Adın",
+    "placeholder": "Örn. Ayşe",
+    "hint": "2–20 karakter: harf, rakam, boşluk veya tire.",
+    "submit": "Kaydet",
+    "saving": "Kaydediliyor…",
+    "too_short": "İsim en az 2 karakter olmalı.",
+    "too_long": "İsim en fazla 20 karakter olabilir.",
+    "invalid_chars": "Yalnızca harf, rakam, boşluk ve tire kullanabilirsin."
+  },
+  "leaderboard": {
+    "title": "{category} · İlk 10",
+    "rank": "Sıra",
+    "player": "Oyuncu",
+    "score": "Puan",
+    "correct": "Doğru",
+    "you": "Sen",
+    "empty": "Henüz kimse tabloya girmedi. İlk sen ol!",
+    "yourRank": "Senin sıran"
+  },
+  "errors": {
+    "network_error": "Sunucuya ulaşılamadı. Bağlantını kontrol edip tekrar dene.",
+    "rate_limited": "Çok fazla istek gönderdin. Biraz bekleyip tekrar dene.",
+    "category_unavailable": "Bu kategoride şu an yeterli soru yok. Başka bir kategori dene.",
+    "category_not_found": "Kategori bulunamadı.",
+    "session_not_found": "Quiz oturumu bulunamadı.",
+    "session_expired": "Quiz oturumun hareketsizlikten dolayı sona erdi. Yeni bir quiz başlat.",
+    "session_completed": "Bu quiz zaten tamamlandı.",
+    "session_not_completed": "Bu quiz henüz bitmedi.",
+    "name_already_set": "Bu skor için isim zaten kaydedilmiş.",
+    "name_window_closed": "İsim kaydetme süresi (quiz bitiminden sonra 30 dakika) doldu.",
+    "name_invalid": "Bu isim kurallara uymuyor. Lütfen başka bir isim dene.",
+    "validation_error": "Gönderilen bilgi geçersiz.",
+    "server_error": "Sunucuda bir hata oluştu. Lütfen daha sonra tekrar dene.",
+    "unknown": "Beklenmeyen bir hata oluştu."
+  }
+}
