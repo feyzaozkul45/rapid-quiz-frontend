@@ -42,10 +42,10 @@ Uygulama <http://localhost:5173> adresinde açılır.
 
 API adresi `VITE_API_BASE_URL` ortam değişkeniyle verilir (`.env` dosyası; örnek: `.env.example`):
 
-| Ortam            | Değer                                                                      |
-| ---------------- | -------------------------------------------------------------------------- |
-| Yerel geliştirme | `http://localhost:8000/api/v1` (değişken yoksa varsayılan budur)           |
-| Production       | `https://api.rapidquiz.example.com/api/v1` (derleme anında pakete gömülür) |
+| Ortam            | Değer                                                                                              |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
+| Yerel geliştirme | `http://localhost:8000/api/v1` (değişken yoksa varsayılan budur)                                   |
+| Production       | `https://rapid-quiz-api.onrender.com/api/v1` (Render servis adresi; derleme anında pakete gömülür) |
 
 Tarayıcıdan farklı bir origin'e istek gittiği için backend'in `CORS_ALLOWED_ORIGINS` ayarında frontend adresi bulunmalıdır. Geliştirmede bu `http://localhost:5173`'tür (backend `.env.example` varsayılanı); portu değiştirirsen backend'de de güncelle. Aksi halde tarayıcı konsolunda CORS hatası ve ekranda "Sunucuya ulaşılamadı" mesajı görürsün.
 
@@ -88,10 +88,11 @@ src/
 - Quiz sırasında tarayıcı geri tuşu/ana sayfa bağlantısı onay penceresi açar. Önceki soruya dönülemez.
 - Klavye: quiz ekranında 1–4 tuşları seçenekleri işaretler.
 - Hata mesajları `error.code`'a göre `tr.json` içindeki `errors.*` anahtarlarından gelir.
+- **Uyuyan sunucu (Render ücretsiz plan).** Backend 15 dk hareketsizlikte uyur, uyanması 30–60 sn sürer. Sunucu henüz hiç yanıt vermediyse istek zaman aşımı 90 sn'dir, ağ hatası/502/503/504'te 3 sn arayla yeniden denenir ve 3 sn içinde yanıt gelmezse "Sunucu uyanıyor, lütfen bekleyin" mesajı görünür. İlk yanıttan sonra normal 10 sn zaman aşımına dönülür. `VITE_COLD_START_TIMEOUT_MS` süreyi ayarlar; `0` korumayı kapatır (yerel `.env.example` bunu `0` yapar, böylece backend kapalıyken hata hemen görünür). Mantık `src/api/client.ts` ve `src/api/serverStatus.ts` içindedir.
 
 ## Deployment (DigitalOcean App Platform)
 
-`.do/app.yaml` statik site tanımıdır (`catchall_document: index.html` history modu için zorunlu). `<github-kullanıcı>` ve alan adlarını doldur, sonra:
+Frontend ücretsiz DigitalOcean statik sitesidir; backend Render'da, veritabanı Neon'dadır (kurulum: backend README ve [docs/PROJECT.md](docs/PROJECT.md) Bölüm 11). `.do/app.yaml` statik site tanımıdır (`catchall_document: index.html` history modu için zorunlu). `VITE_API_BASE_URL` değeri Render servisinin gerçek adresini göstermelidir (`rapid-quiz-api.onrender.com` varsayımdır), sonra:
 
 ```bash
 doctl apps spec validate .do/app.yaml

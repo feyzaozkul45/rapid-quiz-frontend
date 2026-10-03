@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { serverWaking } from '@/api/serverStatus'
 </script>
 
 <template>
@@ -12,6 +13,15 @@ import { RouterLink, RouterView } from 'vue-router'
         ⚡ {{ $t('app.name') }}
       </RouterLink>
     </header>
+    <div
+      v-if="serverWaking"
+      role="status"
+      class="mb-4 rounded-xl bg-amber-50 p-4 text-amber-900"
+      data-testid="server-waking"
+    >
+      <p class="font-semibold">⏳ {{ $t('server.waking') }}</p>
+      <p class="text-sm">{{ $t('server.wakingHint') }}</p>
+    </div>
     <main class="flex-1">
       <RouterView />
     </main>

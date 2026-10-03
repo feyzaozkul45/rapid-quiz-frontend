@@ -12,5 +12,7 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.spec.ts'],
     globals: false,
+    // .env'deki yerel değer (0 = koruma kapalı) testleri etkilemesin.
+    env: { VITE_COLD_START_TIMEOUT_MS: '90000' },
   },
 })

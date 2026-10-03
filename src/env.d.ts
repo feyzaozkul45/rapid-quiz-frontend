@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL?: string
+  readonly VITE_COLD_START_TIMEOUT_MS?: string
 }
 
 interface ImportMeta {

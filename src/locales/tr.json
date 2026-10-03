@@ -8,6 +8,10 @@
     "home": "Ana sayfa",
     "loading": "Yükleniyor…"
   },
+  "server": {
+    "waking": "Sunucu uyanıyor, lütfen bekleyin…",
+    "wakingHint": "Uzun süre kullanılmadığı için ilk istek 30–60 saniye sürebilir."
+  },
   "home": {
     "title": "Bir kategori seç",
     "subtitle": "20 soru, her soru için yalnızca 5 saniye. Geri dönüş yok!",
