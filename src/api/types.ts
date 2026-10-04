@@ -33,6 +33,8 @@ export interface Question {
 
 export interface AnswerResult {
   is_correct: boolean
+  /** Cevap 300 ms'den hızlı geldi: puan verilmedi. */
+  too_fast?: boolean
   correct_choice_id: number | null
   points: number
   is_last: boolean

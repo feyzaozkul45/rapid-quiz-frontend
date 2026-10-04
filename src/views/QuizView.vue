@@ -30,6 +30,7 @@ const feedbackText = computed(() => {
   const feedback = store.feedback
   if (!feedback) return ''
   if (store.selectedChoiceId === null) return t('quiz.timeUp')
+  if (feedback.too_fast) return t('quiz.tooFast')
   return feedback.is_correct ? t('quiz.correct') : t('quiz.wrong')
 })
 

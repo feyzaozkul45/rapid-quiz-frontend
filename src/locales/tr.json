@@ -25,6 +25,7 @@
     "correct": "Doğru!",
     "wrong": "Yanlış",
     "timeUp": "Süre doldu",
+    "tooFast": "Çok hızlı! Bu cevap için puan verilmedi",
     "leaveConfirm": "Quiz yarıda kalacak ve ilerlemen kaybolacak. Ana sayfaya dönmek istiyor musun?"
   },
   "result": {

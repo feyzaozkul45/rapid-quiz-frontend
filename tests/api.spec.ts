@@ -64,3 +64,27 @@ describe('isim kuralları', () => {
     expect(validateName(input)).toBe(expected)
   })
 })
+
+describe('createSession isteği', () => {
+  it('son oynanan soru ID’lerini gövdede gönderir', async () => {
+    const { http, createSession } = await import('@/api')
+    const original = http.defaults.adapter
+    let body: unknown
+    http.defaults.adapter = async (config) => {
+      body = JSON.parse(config.data as string)
+      return { status: 201, data: {}, config, headers: {}, statusText: '' } as AxiosResponse
+    }
+    try {
+      await createSession('fizik', [3, 1, 2])
+      expect(body).toEqual({
+        category: 'fizik',
+        client_type: 'web',
+        recent_question_ids: [3, 1, 2],
+      })
+      await createSession('fizik')
+      expect(body).toMatchObject({ recent_question_ids: [] })
+    } finally {
+      http.defaults.adapter = original
+    }
+  })
+})

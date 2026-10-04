@@ -13,8 +13,18 @@ export async function getCategories(): Promise<Category[]> {
   return (await http.get<Category[]>('/categories/')).data
 }
 
-export async function createSession(category: string): Promise<SessionCreated> {
-  return (await http.post<SessionCreated>('/quiz-sessions/', { category, client_type: 'web' })).data
+/** `recentQuestionIds`: bu kategoride son oynanan soru ID'leri (eskiden yeniye, en fazla 40). */
+export async function createSession(
+  category: string,
+  recentQuestionIds: number[] = [],
+): Promise<SessionCreated> {
+  return (
+    await http.post<SessionCreated>('/quiz-sessions/', {
+      category,
+      client_type: 'web',
+      recent_question_ids: recentQuestionIds,
+    })
+  ).data
 }
 
 export async function getCurrentQuestion(sessionId: string): Promise<Question> {

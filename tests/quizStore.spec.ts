@@ -42,6 +42,51 @@ describe('quizStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.resetAllMocks()
+    localStorage.clear()
+    sessionStorage.clear()
+  })
+
+  describe('tekrar önleme (son oynanan sorular)', () => {
+    it('start, kategorinin son oynanan soru ID’lerini sunucuya gönderir', async () => {
+      localStorage.setItem('rq:recent:fizik', JSON.stringify([5, 6, 7]))
+      localStorage.setItem('rq:recent:yazilim', JSON.stringify([99]))
+      api.createSession.mockResolvedValue({ session_id: 's1', category: 'fizik' })
+
+      await useQuizStore().start('fizik')
+
+      expect(api.createSession).toHaveBeenCalledWith('fizik', [5, 6, 7])
+    })
+
+    it('gösterilen her soru kategoriye göre hatırlanır', async () => {
+      api.createSession.mockResolvedValue({ session_id: 's1', category: 'fizik' })
+      api.getCurrentQuestion.mockResolvedValueOnce(question(0)).mockResolvedValueOnce(question(1))
+      api.submitAnswer.mockResolvedValue(answerResult())
+      const store = useQuizStore()
+      await store.start('fizik')
+      await store.load('s1')
+      await store.answer(1)
+      await store.next()
+
+      expect(JSON.parse(localStorage.getItem('rq:recent:fizik')!)).toEqual([100, 101])
+      expect(localStorage.getItem('rq:recent:yazilim')).toBeNull()
+    })
+
+    it('sayfa yenilenince (store boşken) kategori oturumdan bulunur', async () => {
+      api.createSession.mockResolvedValue({ session_id: 's1', category: 'fizik' })
+      await useQuizStore().start('fizik')
+
+      setActivePinia(createPinia()) // yenileme: yeni, boş store
+      api.getCurrentQuestion.mockResolvedValue(question(3))
+      await useQuizStore().load('s1')
+
+      expect(JSON.parse(localStorage.getItem('rq:recent:fizik')!)).toEqual([103])
+    })
+
+    it('kategorisi bilinmeyen oturumda hiçbir şey yazılmaz', async () => {
+      api.getCurrentQuestion.mockResolvedValue(question(0))
+      await useQuizStore().load('bilinmeyen')
+      expect(localStorage.length).toBe(0)
+    })
   })
 
   it('start oturumu açar ve id döner', async () => {
@@ -51,7 +96,7 @@ describe('quizStore', () => {
     expect(await store.start('fizik')).toBe('s1')
     expect(store.sessionId).toBe('s1')
     expect(store.category).toBe('fizik')
-    expect(api.createSession).toHaveBeenCalledWith('fizik')
+    expect(api.createSession).toHaveBeenCalledWith('fizik', [])
   })
 
   it('load soruyu getirir ve question aşamasına geçer', async () => {

@@ -40,8 +40,14 @@ test('tam bir quiz turu: kategori, 20 soru, sonuç, isim, skor tablosu', async (
   // 2000 puanla birinci sıra
   await expect(page.getByTestId('leaderboard-row').first()).toContainText('Ayşe')
 
-  // Tekrar oyna yeni bir quiz başlatır.
+  // Tekrar oyna yeni bir quiz başlatır ve az önce oynanan 20 soruyu sunucuya bildirir.
+  const startRequest = page.waitForRequest(
+    (r) => r.method() === 'POST' && r.url().endsWith('/quiz-sessions/'),
+  )
   await page.getByTestId('play-again').click()
+  const body = (await startRequest).postDataJSON() as { recent_question_ids: number[] }
+  expect(body.recent_question_ids).toHaveLength(20)
+  expect(new Set(body.recent_question_ids).size).toBe(20)
   await expect(page).toHaveURL(/\/quiz\//)
   await expect(page.getByTestId('progress')).toHaveText('Soru 1/20')
 })

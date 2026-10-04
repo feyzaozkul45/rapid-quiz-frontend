@@ -9,6 +9,12 @@ import {
   type AnswerResult,
   type Question,
 } from '@/api'
+import {
+  categoryOfSession,
+  getRecentQuestionIds,
+  rememberQuestion,
+  rememberSessionCategory,
+} from '@/utils/recentQuestions'
 
 export type QuizPhase = 'idle' | 'loading' | 'question' | 'feedback' | 'finished' | 'error'
 
@@ -45,9 +51,10 @@ export const useQuizStore = defineStore('quiz', () => {
   /** Yeni oturum açar; başarısız olursa hatayı fırlatır (çağıran ekran gösterir). */
   async function start(categorySlug: string): Promise<string> {
     reset()
-    const session = await createSession(categorySlug)
+    const session = await createSession(categorySlug, getRecentQuestionIds(categorySlug))
     sessionId.value = session.session_id
     category.value = session.category
+    rememberSessionCategory(session.session_id, session.category)
     return session.session_id
   }
 
@@ -63,6 +70,9 @@ export const useQuizStore = defineStore('quiz', () => {
     try {
       // Önceki sorunun renkleri yeni soru gelene kadar ekranda kalır (titreme olmasın).
       question.value = await getCurrentQuestion(id)
+      // Sayfa yenilenince kategori store'da yoktur; oturumdan hatırlanır.
+      category.value ??= categoryOfSession(id)
+      if (category.value) rememberQuestion(category.value, question.value.question_id)
       selectedChoiceId.value = null
       feedback.value = null
       phase.value = 'question'

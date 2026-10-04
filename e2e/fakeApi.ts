@@ -97,6 +97,7 @@ export async function mockApi(page: Page) {
           is_correct: isCorrect,
           correct_choice_id: correctId,
           points: isCorrect ? 100 : 0,
+          too_fast: false,
           is_last: session.index >= TOTAL,
           score_so_far: session.correct * 100,
         })
