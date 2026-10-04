@@ -88,3 +88,51 @@ describe('createSession isteği', () => {
     }
   })
 })
+
+describe('oturum ID’si yol parçası olarak kodlanır', () => {
+  async function requestedUrl(call: (api: typeof import('@/api')) => Promise<unknown>) {
+    const api = await import('@/api')
+    const original = api.http.defaults.adapter
+    let url = ''
+    api.http.defaults.adapter = async (config) => {
+      url = config.url ?? ''
+      return { status: 200, data: {}, config, headers: {}, statusText: '' } as AxiosResponse
+    }
+    try {
+      await call(api)
+    } finally {
+      api.http.defaults.adapter = original
+    }
+    return url
+  }
+
+  const evil = '../admin?x=1#y'
+  const encoded = '..%2Fadmin%3Fx%3D1%23y'
+
+  it('normal UUID değişmez', async () => {
+    const id = '8f1c0000-0000-4000-8000-000000000000'
+    expect(await requestedUrl((api) => api.getCurrentQuestion(id))).toBe(
+      `/quiz-sessions/${id}/current-question/`,
+    )
+  })
+
+  it.each([
+    [
+      'getCurrentQuestion',
+      (api: typeof import('@/api')) => api.getCurrentQuestion(evil),
+      'current-question',
+    ],
+    ['submitAnswer', (api: typeof import('@/api')) => api.submitAnswer(evil, 1, null), 'answers'],
+    ['getResult', (api: typeof import('@/api')) => api.getResult(evil), 'result'],
+    [
+      'savePlayerName',
+      (api: typeof import('@/api')) => api.savePlayerName(evil, 'Ayşe'),
+      'player-name',
+    ],
+  ])('%s: ../ ve ? kodlanır, yol dışına çıkamaz', async (_name, call, tail) => {
+    const url = await requestedUrl(call)
+    expect(url).toBe(`/quiz-sessions/${encoded}/${tail}/`)
+    expect(url).not.toContain('../')
+    expect(url.split('/')).toHaveLength(5) // '', quiz-sessions, <tek parça>, <son>, ''
+  })
+})

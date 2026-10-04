@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
 
+# İşler yalnızca depoyu okur; GITHUB_TOKEN'ın gereksiz yazma yetkisi olmasın.
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Lint, birim testleri, build

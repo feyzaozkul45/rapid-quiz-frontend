@@ -9,6 +9,13 @@ import type {
   SessionCreated,
 } from './types'
 
+/**
+ * URL yolunun tek bir parçası olarak güvenli biçimde kodlar. Oturum ID'si adres çubuğundan
+ * (`/quiz/:sessionId`) geldiği için `../` veya `?` içerebilir; kodlanmazsa API içinde başka bir
+ * yola istek atılabilirdi.
+ */
+const segment = encodeURIComponent
+
 export async function getCategories(): Promise<Category[]> {
   return (await http.get<Category[]>('/categories/')).data
 }
@@ -28,7 +35,7 @@ export async function createSession(
 }
 
 export async function getCurrentQuestion(sessionId: string): Promise<Question> {
-  return (await http.get<Question>(`/quiz-sessions/${sessionId}/current-question/`)).data
+  return (await http.get<Question>(`/quiz-sessions/${segment(sessionId)}/current-question/`)).data
 }
 
 /** Süre dolduysa `choiceId` null gönderilir. */
@@ -38,7 +45,7 @@ export async function submitAnswer(
   choiceId: number | null,
 ): Promise<AnswerResult> {
   return (
-    await http.post<AnswerResult>(`/quiz-sessions/${sessionId}/answers/`, {
+    await http.post<AnswerResult>(`/quiz-sessions/${segment(sessionId)}/answers/`, {
       question_id: questionId,
       choice_id: choiceId,
     })
@@ -46,7 +53,7 @@ export async function submitAnswer(
 }
 
 export async function getResult(sessionId: string): Promise<QuizResult> {
-  return (await http.get<QuizResult>(`/quiz-sessions/${sessionId}/result/`)).data
+  return (await http.get<QuizResult>(`/quiz-sessions/${segment(sessionId)}/result/`)).data
 }
 
 export async function savePlayerName(
@@ -54,7 +61,7 @@ export async function savePlayerName(
   playerName: string,
 ): Promise<PlayerNameResult> {
   return (
-    await http.patch<PlayerNameResult>(`/quiz-sessions/${sessionId}/player-name/`, {
+    await http.patch<PlayerNameResult>(`/quiz-sessions/${segment(sessionId)}/player-name/`, {
       player_name: playerName,
     })
   ).data
