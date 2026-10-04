@@ -42,10 +42,10 @@ Uygulama <http://localhost:5173> adresinde açılır.
 
 API adresi `VITE_API_BASE_URL` ortam değişkeniyle verilir (`.env` dosyası; örnek: `.env.example`):
 
-| Ortam            | Değer                                                                                              |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| Yerel geliştirme | `http://localhost:8000/api/v1` (değişken yoksa varsayılan budur)                                   |
-| Production       | `https://rapid-quiz-api.onrender.com/api/v1` (Render servis adresi; derleme anında pakete gömülür) |
+| Ortam            | Değer                                                                             |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Yerel geliştirme | `http://localhost:8000/api/v1` (değişken yoksa varsayılan budur)                  |
+| Production       | `https://rapid-quiz-api-pqpc.onrender.com/api/v1` (derleme anında pakete gömülür) |
 
 Tarayıcıdan farklı bir origin'e istek gittiği için backend'in `CORS_ALLOWED_ORIGINS` ayarında frontend adresi bulunmalıdır. Geliştirmede bu `http://localhost:5173`'tür (backend `.env.example` varsayılanı); portu değiştirirsen backend'de de güncelle. Aksi halde tarayıcı konsolunda CORS hatası ve ekranda "Sunucuya ulaşılamadı" mesajı görürsün.
 
@@ -92,7 +92,7 @@ src/
 
 ## Deployment (DigitalOcean App Platform)
 
-Frontend ücretsiz DigitalOcean statik sitesidir; backend Render'da, veritabanı Neon'dadır (kurulum: backend README ve [docs/PROJECT.md](docs/PROJECT.md) Bölüm 11). `.do/app.yaml` statik site tanımıdır (`catchall_document: index.html` history modu için zorunlu). `VITE_API_BASE_URL` değeri Render servisinin gerçek adresini göstermelidir (`rapid-quiz-api.onrender.com` varsayımdır), sonra:
+Frontend ücretsiz DigitalOcean statik sitesidir; backend Render'da, veritabanı Neon'dadır (kurulum: backend README ve [docs/PROJECT.md](docs/PROJECT.md) Bölüm 11). `.do/app.yaml` statik site tanımıdır (`catchall_document: index.html` history modu için zorunlu). `VITE_API_BASE_URL` değeri Render servisinin gerçek adresini göstermelidir (`rapid-quiz-api-pqpc.onrender.com`), sonra:
 
 ```bash
 doctl apps spec validate .do/app.yaml
