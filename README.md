@@ -87,6 +87,8 @@ src/
 - Cevap butonları ilk tıklamada kilitlenir. Cevaptan sonra ~1 sn doğru/yanlış gösterilir; sonraki soru bu süre dolunca istenir, yani gösterim 5 saniyeye dahil değildir.
 - Quiz sırasında tarayıcı geri tuşu/ana sayfa bağlantısı onay penceresi açar. Önceki soruya dönülemez.
 - Klavye: quiz ekranında 1–4 tuşları seçenekleri işaretler.
+- **Tekrar önleme.** Her kategoride son oynanan 40 soru ID'si tarayıcının `localStorage`'ında (`rq:recent:<kategori>`) tutulur ve quiz başlatılırken `recent_question_ids` olarak sunucuya gönderilir; sunucu önce bu listenin dışından soru seçer. Depolama kapalıysa oyun yine çalışır, yalnızca tekrar önleme devre dışı kalır. Sayfa yenilenince kategori `sessionStorage`'daki oturum kaydından bulunur.
+- Soruya 300 ms'den hızlı verilen cevap sunucuda puansız sayılır; ekranda "Çok hızlı! Bu cevap için puan verilmedi" görünür.
 - Hata mesajları `error.code`'a göre `tr.json` içindeki `errors.*` anahtarlarından gelir.
 - **Uyuyan sunucu (Render ücretsiz plan).** Backend 15 dk hareketsizlikte uyur, uyanması 30–60 sn sürer. Sunucu henüz hiç yanıt vermediyse istek zaman aşımı 90 sn'dir, ağ hatası/502/503/504'te 3 sn arayla yeniden denenir ve 3 sn içinde yanıt gelmezse "Sunucu uyanıyor, lütfen bekleyin" mesajı görünür. İlk yanıttan sonra normal 10 sn zaman aşımına dönülür. `VITE_COLD_START_TIMEOUT_MS` süreyi ayarlar; `0` korumayı kapatır (yerel `.env.example` bunu `0` yapar, böylece backend kapalıyken hata hemen görünür). Mantık `src/api/client.ts` ve `src/api/serverStatus.ts` içindedir.
 
